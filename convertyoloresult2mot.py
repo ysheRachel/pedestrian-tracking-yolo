@@ -31,10 +31,13 @@ jsonname='P:\\Downloads\\motprocessing\\testresult\\result.json'
 with open(jsonname,'r') as f:
     jsonstr=json.loads(f.read())
     for item in jsonstr:
-        frame_idx=item['frame_id']
+#        frame_idx=item['frame_id']
+        
+        filename1=item['filename']
+        filename=filename1.split('/')[-2]
+        frame_idx=filename1.split('/')[-1]
+        frame_idx=frame_idx.split('.')[0]
         imgpath=os.path.join(imgprevpath,str(frame_idx)+'.jpg')
-        filename=item['filename']
-        filename=filename.split('/')[-2]
         if filename=='a1':
             obj=item['objects']
             print(obj)
@@ -43,26 +46,26 @@ with open(jsonname,'r') as f:
                 
                 if str(classid)=='0':
                     print(classid)
-                    img=cv2.imread(imgpath)
+#                    img=cv2.imread(imgpath)
                     size=np.shape(img)
                     wwhole=size[0]
                     hwhole=size[1]
-                    xcenter=int(np.floor(ob['relative_coordinates']['center_x']*wwhole))
-                    ycenter=int(np.floor(ob['relative_coordinates']['center_y']*hwhole))
-                    width=int(np.floor(ob['relative_coordinates']['width']*wwhole))
-                    height=int(np.floor(ob['relative_coordinates']['height']*hwhole))
+                    xcenter=int(np.floor(ob['relative_coordinates']['center_x']*hwhole))
+                    ycenter=int(np.floor(ob['relative_coordinates']['center_y']*wwhole))
+                    width=int(np.floor(ob['relative_coordinates']['width']*hwhole))
+                    height=int(np.floor(ob['relative_coordinates']['height']*wwhole))
                     confidence=ob['confidence']
                     xtl=int(np.floor(xcenter-width/2))
                     ytl=int(np.floor(ycenter-height/2))
                     string=str(frame_idx)+',-1,'+str(xtl)+','+str(ytl)+','+str(width)+','+str(height)+','+str(confidence)+',-1,-1,-1'+'\n'
                     f1.write(string)
-                    img=cv2.imread(imgpath)
+#                    img=cv2.imread(imgpath)
                     text=str(confidence)
-                    cv2.rectangle(img,(xtl,ytl),(xtl+width,ytl+height),[255,0,0],5)#,8)#,0)
-                    font=cv2.FONT_HERSHEY_SIMPLEX
-                    cv2.putText(img,text,(xtl,ytl),font,2,[255,0,0],2,cv2.LINE_AA)
-                    save_file_path=os.path.join(imgprevpath1,'img1')
-                    cv2.imwrite(os.path.join(save_file_path,str(frame_idx)+'.jpg'),img)
+#                    cv2.rectangle(img,(xtl,ytl),(xtl+width,ytl+height),[255,0,0],5)#,8)#,0)
+#                    font=cv2.FONT_HERSHEY_SIMPLEX
+#                    cv2.putText(img,text,(xtl,ytl),font,2,[255,0,0],2,cv2.LINE_AA)
+#                    save_file_path=os.path.join(imgprevpath1,'img1')
+#                    cv2.imwrite(os.path.join(save_file_path,str(frame_idx)+'.jpg'),img)
                     
                     
             
